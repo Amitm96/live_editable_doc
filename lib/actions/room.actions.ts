@@ -12,7 +12,7 @@ export const createDocument = async ({ userId, email }: CreateDocumentParams) =>
 
     try {
 
-        let metadata = {
+        const metadata = {
             creatorId: userId,
             email,
             title: 'untitled'
@@ -31,7 +31,7 @@ export const createDocument = async ({ userId, email }: CreateDocumentParams) =>
         return parseStringify(room);
     }
     catch (err) {
-        console.log('Error happend during creation of room');
+        console.log('Error happend during creation of room', err);
     }
 }
 
@@ -71,7 +71,7 @@ export const getDocuments = async (email: string) => {
 
 export const updateDocument = async ({roomId, title}: {roomId: string; title: string}) => {
     try{
-        let updatedRoom = await liveblocks.updateRoom(roomId, {metadata: {title}});
+        const updatedRoom = await liveblocks.updateRoom(roomId, {metadata: {title}});
 
         revalidatePath(`/documents/${roomId}`);
         return parseStringify(updatedRoom);
@@ -92,7 +92,7 @@ export const updateDocumentAccess = async ({roomId, email, userType, updatedBy}:
         if(room){
             const notificationId = nanoid();
 
-            await liveblocks.triggerInboxNotification({userId: email, kind: '$documentAccess', subjectId: roomId, activityData: {userType, title: `You document access updated to ${userType} by ${updatedBy.name}`, updatedBy: updatedBy.name, avatar: updatedBy.avatar, email: updatedBy.email}, roomId});
+            await liveblocks.triggerInboxNotification({userId: email, kind: '$documentAccess', subjectId: notificationId, activityData: {userType, title: `You document access updated to ${userType} by ${updatedBy.name}`, updatedBy: updatedBy.name, avatar: updatedBy.avatar, email: updatedBy.email}, roomId});
         }
 
         revalidatePath(`/documents/${roomId}`);
@@ -105,7 +105,7 @@ export const updateDocumentAccess = async ({roomId, email, userType, updatedBy}:
 
 export const removeCollaborator = async ({roomId, email}: {roomId: string; email: string}) => {
     try{
-        let room = await liveblocks.getRoom(roomId);
+        const room = await liveblocks.getRoom(roomId);
 
         if(room.metadata.email === email){
             throw new Error('you can not remove your account');

@@ -3,7 +3,7 @@
 import Loader from '@/components/Loader';
 import { getClerkUsers, getDocumentUsers } from '@/lib/actions/user.actions';
 import { useUser } from '@clerk/nextjs';
-import { currentUser } from '@clerk/nextjs/server';
+// import { currentUser } from '@clerk/nextjs/server';
 import { ClientSideSuspense, LiveblocksProvider } from '@liveblocks/react/suspense';
 import { ReactNode } from 'react';
 
@@ -15,7 +15,7 @@ const Provider = ({ children }: { children: ReactNode }) => {
       return users;
     }} resolveMentionSuggestions={async ({text, roomId}) => {
 
-      const roomUsers = await getDocumentUsers({roomId, currentUser: clerkUser?.emailAddresses[0].emailAddress!, text});
+      const roomUsers = await getDocumentUsers({roomId, currentUser: clerkUser?.emailAddresses[0].emailAddress || 'test', text});
       return roomUsers;
     }}>
 

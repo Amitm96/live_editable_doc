@@ -71,7 +71,7 @@ const ShareModal = ({ roomId, collaborators, creatorId, currentUserType }: Share
                 <div className='my-2 space-y-2'>
                     <ul className='flex flex-col'>
                         {collaborators.map((colllaborator) => (
-                            <Collaborator roomId={roomId} creatorId={creatorId} collaborator={colllaborator} email={email} user={colllaborator}/>
+                            <Collaborator key={colllaborator.id} roomId={roomId} creatorId={creatorId} collaborator={colllaborator} email={email} user={colllaborator}/>
                         ))}
                     </ul>
                 </div>

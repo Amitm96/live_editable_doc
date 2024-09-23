@@ -1,7 +1,7 @@
 'use client';
 
 import { ClientSideSuspense, RoomProvider } from '@liveblocks/react/suspense'
-import React, { MouseEvent, MouseEventHandler, useEffect, useRef, useState } from 'react'
+import React, {  useEffect, useRef, useState } from 'react'
 import Header from './Header'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { Editor } from './editor/Editor'
@@ -27,7 +27,7 @@ const CollaborativeRoom = ({ roomId, roomMetadata, users, currentUserType }: Col
 
             try{
                 if(documentTitle != roomMetadata.title){
-                    let updatedDocument = await updateDocument({roomId, title: documentTitle});
+                    const updatedDocument = await updateDocument({roomId, title: documentTitle});
 
                     if(updatedDocument){
                         setEditing(false);
@@ -44,7 +44,7 @@ const CollaborativeRoom = ({ roomId, roomMetadata, users, currentUserType }: Col
     }
 
     useEffect(() => {
-        const handleClickOutside = (e: any) => {
+        const handleClickOutside = (e: Event) => {
             if(containerRef.current && !containerRef.current.contains(e.target as Node)){
                 setEditing(false);
                 updateDocument({roomId, title: documentTitle});
